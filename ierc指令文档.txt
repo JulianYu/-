@@ -1,0 +1,236 @@
+智能排插
+服务器连接： socket     demo.erongchuang.com    port:8282 
+socket连上后要先发送指令签到，不然30秒后服务器会踢掉连线
+1、签到指令：{"cmd":"sign","token":"430C0F31FAF1FB1565E4290D1B61185A2408A6DEEA1604C1B5AEB14E44BDF2E0"}
+返回结果：
+1）失败：{"cmd":"sign","code”:202,”data":[],"msg":"签到失败!"}
+2）成功：{"cmd":"sign","code":0,"data":[],"msg":"签到成功!"}
+
+token:是常量，由管理员分配，相当证书
+
+2、登录指令：
+{"cmd":"login","username":"13632539973","password":"123456"}
+返回结果：
+1）成功:
+{"cmd":"login","code":0,"data":{"userid":"1","username":"1","nickname":"","signature":null,"reg_time":"2016-03-14 20:58:46","avatar":""},"msg":"登录成功!"}
+2) 失败:
+{"cmd":"login","code":"201","data":[],"msg”:”1.缺少username参数或为空! 2.缺少password参数或为空!"}
+{"cmd":"login","code”:203,”data":[],"msg":"登录失败!"}
+
+3、注册指令：
+{"cmd":"register","username":"13632539973","password":"123456"}
+返回结果：
+1）成功:
+{"cmd":"register","code":0,"data":[],"msg":"注册成功!"}
+2) 失败:
+{"cmd":"register","code":"201","data":[],"msg”:”1.缺少password参数或为空! "}
+
+4、退出当前用户
+指令：{"cmd":"logout"}
+返回数据：
+{"cmd":"logout","code":0,"data":[],"msg":"成功登出!"}
+
+5、添加设备
+{"cmd":"addmydevices","euuid":"1111","devices_type":"1","remarks":"排插"}
+返回数据：
+{"cmd":"addmydevices","code":0,"data":[],"msg":"绑定成功!"}
+
+6、分享我的设备
+{"cmd":"sharemydevices","euuid":"1111","shareusername":"1","remotes":""}
+remotes为 mdrid 的组合，可以为空 如：123,234,566,
+7、修改设备名
+{"cmd":"updatedr”,”mid":"m1610a8fda7d01c71f44e8c4f8ab8c6f","remarks":"排插2"}
+返回数据：
+{"cmd":"updatedr”,”code":0,"data":[],"msg":"设备备注名更新成功!"}
+
+8、获取所有分类
+指令:
+{"cmd":"getrt”}
+返回结果：
+1)成功：
+{"cmd":"getrt”,”code":0,"data":[{"rtid":1,"rtname":"机顶盒","display":"1"},{"rtid":2,"rtname":"电视","display":"1"},{"rtid":3,"rtname":"空调","display":"1"}],"msg":""}
+ 
+2）失败：
+{"cmd":"getrt”,”code":"204","data":[],"msg":"您还没有登陆,无权限操作!"}
+{"cmd":"getrt”,”code”:215,”data":[],"msg":"操作失败！"}
+
+8、获取单个分类的品牌
+指令:
+{"cmd":"getbc”,”indexrtid":"2"}
+返回结果：
+1)成功：
+{"cmd":"getbc”,”code":0,"data":[{"brandid":1,"brandname":"长虹","display":"1","indexrtid":".2."},{"brandid":2,"brandname":"创维","display":"1","indexrtid":".2."}],"msg":""
+
+9、获取遥控型号
+指令:
+{"cmd":"getrc”,”searchname":"CE"}
+{"cmd":"getrc”,”searchname":"CE","rtid":"2","brandid":"5"}
+{"cmd":"getrc”,”rtid":"2","brandid":"5"}
+
+9、添加我的遥控
+指令:
+{"cmd":"addmyrc","rcid":"1","mid":"m1610a8fda7d01c71f44e8c4f8ab8c6f","remark":"电视"}
+
+返回结果：
+1)成功：
+{"cmd":"addmyrc”,”code":0,"data":[],"msg":"添加我的遥控成功!"}
+
+10、删除我的遥控
+{"cmd":"delmyrc”,”mdrid":"mdr754b97fbee5e4e516c01c486bc466"}
+
+返回结果：
+1）成功
+{"cmd":"delmyrc”,”code”:”0”,”data":[],"msg":"成功删除我的遥控!"}
+2）失败
+{"cmd":"delmyrc”,”code":"220","data":[],"msg":"删除我的遥控失败或已删除!"}11、重命我的遥控备注
+{"cmd":"updatemyrcr”,”mdrid":"mdr754b97fbee5e4e516c01c486bc466"}
+
+返回结果：
+1）成功
+{"cmd":"updatemyrcr”,”code”:”0”,”data":[],"msg":"设备备注名更新成功!"}
+2）失败
+{"cmd":"updatemyrcr”,”code":"220","data":[],"msg":"遥控重命名失败!"}
+
+12、获取我的设备
+ {"cmd":"getmydevices"}
+返回数据：
+{"cmd":"getmydevices","code":0,"msg":"","data”:[{“mid":"m1610a8fda7d01c71f44e8c4f8ab8c6f","userid":"u82b71fa49251db8ec9816eab3e5feb8","euuid":"1111","remarks":"排插2","is_share":"0","share_id":null,"devices_type":1,"create_time":"2016-03-18 10:19:55","remotes":[{"mdrid":"mdr3973cc238e3d3035c81948054d672","userid":"u82b71fa49251db8ec9816eab3e5feb8","rcid":1,"remark":"电视","mid":"m1610a8fda7d01c71f44e8c4f8ab8c6f","euuid":"1111"},{"mdrid":"mdr45807a48edffd31f020d302f472ef","userid":"u82b71fa49251db8ec9816eab3e5feb8","rcid":1,"remark":"电视1","mid":"m1610a8fda7d01c71f44e8c4f8ab8c6f","euuid":"1111"}]}]}
+
+{"cmd":"getmydevices","code":0,"data":[],"msg”:”没有设备数据!”}
+
+13、修改密码
+{"cmd":"updatepwd","pwd_new":"123456","pwd_old":"654321"}
+
+成功：
+{"cmd":"updatepwd","code":0,"data":[],"msg":"密码修改成功!"}
+失败：
+{"cmd":"updatepwd","code":"222","data":[],"msg":"原密码错误!"}
+{"cmd":"updatepwd","code":"223","data":[],"msg":"密码修改失败!"}
+
+14、修改昵称
+{"cmd":"updatenickname","nickname":"老皮匠"}成功：
+{"cmd":"updatenickname","code":0,"data":[],"msg":"昵称修改成功!"}
+
+14、修改签名
+{"cmd":"updatesignature","signature":"老皮匠"}成功：
+{"cmd":"UpdateSignature","code":0,"data":[],"msg":"签名修改成功!"}
+
+15、获取我的分享设备
+{"cmd":"getmyshare"}返回：
+{"cmd":"getmyshare","code":0,"data":[],"msg":"没有可分享数据!"}
+
+{"cmd":"getmyshare","code":0,"data":[{"mid":"m8d9fb5a7d16eeddd67b1d1a9cb87ba3","userid":"u504897cf29c0eda72870b85534346c4","euuid":"1111","remarks":"排插2","is_share":"1","share_id":"u82b71fa49251db8ec9816eab3e5feb8","devices_type":1,"create_time":"2016-03-22 09:27:46"}],"msg":""}
+
+16、取消分享设备
+{"cmd":"cancelshare","mid":"123"}
+返回：
+{"cmd":"cancelshare","code":0,"data":[],"msg":"没有可取消数据!"}
+
+17、删除我的设备
+{"cmd":"delmydevices","mid":"123"}
+返回
+{"cmd":"delmydevices","code":0,"data":[],"msg":"设备不存在或不是您的设备!"}
+
+18、发送指令
+
+{"cmd":"sendcontrol","type":"0","objid":"m1610a8fda7d01c71f44e8c4f8ab8c6f","code":""}
+说明：
+type 控制类型 0:排插,Inf-1:机顶盒,Inf-2:电视,Inf-3:空调
+objid 控制设备ID (当type为红外遥控时objid为我的遥控id即mdrid,当为0时为我的设备id即mid
+code  控制代码
+电视、机顶盒控制指令（code）：
+	T_P-:	频道-
+	T_P+:	频道+
+	T_AVTV:	AV/TV
+	T_MENU:	菜单
+	T_V+:	声音+
+	T_V-:	声音-
+	T_RIGHT:	右
+	T_UP:	上
+	T_ONOFF:	电视开关
+	T_DOWN:	下
+	T_D3:	数字3
+	T_D2:	数字2
+	T_D1:	数字1
+	T_D0:	数字0
+	T_D7:	数字7
+	T_D6:	数字6
+	T_D5:	数字5
+	T_D4:	数字4
+	T_D9:	数字9
+	T_D8:	数字8
+	T_D_/_	数字十百位
+	T_OK	确定
+	T_RETURN:	返回
+	T_LEFT:	左
+	T_MUTE:	静音 
+
+空调控制指令（code）：
+NNNNNN	
+6位编码格式定义：
+第1位：开关，1 开，0 关，F 承前状态
+第2位: 模式，0 自动，1 制冷，2 制热 ，3 抽温， 4 送风， F 承前状态 
+第3、4位：温度，00 为16度，01 为17度，02 为18度，03 为19度，04 为20度，05 为21度，06 为22度，07 为23度，
+		08 为24度，09 为25度，0A 为26度，0B 为27度，0C 为28度，0D 为29度，0E 为30度，0F 为		31度，10 为32度，FF 承前状态 
+第5位：风量，0 自动，1 低风，2 中风，3 高风，F 承前状态 
+第6位：风向, 0 自动，1~5分别代表5个位置（没统一），F 承前状态 
+如：只打开空调其它默认上次设置状态 1FFFFF
+
+
+19、修改头像
+{"cmd":"updateheader","headerurl":"http://demo.erongchuang.com:9090/IercApi/Public/upload/v1/2016/06/17/05194896566693430.jpg"}成功：
+{"cmd":"updateheader","code":0,"data":[],"msg":"头像修改成功!"}
+
+20、修改性别
+{"cmd”:”updategender","gender":"0"}
+gender说明：0-未知，1-男，2-女成功：
+{"cmd":"updategender","code":0,"data":[],"msg":"性别修改成功!"}
+
+code代码：
+0	成功
+201	缺少参数或为空
+202	签到失败
+203	登录失败
+204	没有登陆
+205	用户没有登陆或已退出
+206	您输入的注册用户名已存在
+207	注册失败
+208	您没有此设备管理权限
+209	您分享用户不存在 您不能分享给自已
+210	您已分享过给些用户
+211	分享失败
+212	设备备注名更新失败
+213	设备绑定失败
+214	不是有效json数据
+215	获取所有分类 操作失败
+216	获取单个分类的品牌 操作失败
+217	获取遥控型号 操作失败
+218	非法euuid号
+219	添加我的遥控失败
+220	删除我的遥控失败或已删除
+221	遥控重命名失败
+222	原密码错误
+223	密码修改失败
+224	昵称修改失败
+225	设备不在线
+226	头像修改失败
+227	性别修改失败
+
+上传头像图片：
+http://demo.erongchuang.com:9090/IercApi/Public/v1/?service=Upload.upload
+上传方式：post
+上传格式：enctype="multipart/form-data"
+文件id：file（参数）
+返回：
+{
+
+    "ret": 200,
+    "data": {
+        "url": "http://demo.erongchuang.com:9090/IercApi/Public/upload/v1/2016/06/17/05194896566693430.jpg",
+        "thumb120": "http://demo.erongchuang.com:9090/IercApi/Public/upload/v1/2016/06/17/05194896566693430120x120.jpg",
+        "thumb96": "http://demo.erongchuang.com:9090/IercApi/Public/upload/v1/2016/06/17/0519489656669343096x96.jpg",
+        "thumb64": "http://demo.erongchuang.com:9090/IercApi/Public/upload/v1/2016/06/17/0519489656669343064x64.jpg"
+    },
+    "msg": ""
+
+}
